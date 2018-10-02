@@ -2,9 +2,11 @@ import pyautogui as pg
 import numpy as np
 import cv2
 import time
+
 mess_count = 0
 send_count = 0
 no_of_pages = 12
+
 string = 'Thank you for connecting, Glad to connect, Congratulations for all that you do and especially for just who you are. My best wishes to you for your journeys into the future. Please stay in touch; taking unexpected folks in the road can create spectacular destinations. Best Regards, Ali'
 
 def clickAllCloseButton():
@@ -54,6 +56,10 @@ def clickAllCloseButton():
         pg.click()
         white = white + 1
         time.sleep(0.5)
+    # for safety clicking the close one more time
+    pg.moveTo(1024, 388, 0.25)
+    pg.click()
+    # print the no. of black close and white close encountered
     print("black ", black, " white ", white)
 def clickSend():
     timer = 0
@@ -77,18 +83,14 @@ def clickSend():
     return
 
 pg.hotkey('altleft', '\t')  # to get the browser on the screen
-# xbutton, ybutton = 750, 370
 time.sleep(3)
 for i in range(no_of_pages):
-    list_of_message_button = pg.locateAllOnScreen('message.png')
-    count = 0
-    for button in list_of_message_button:
-        count = count + 1
-    print('messages detected ', count)
     list_of_message_button = pg.locateAllOnScreen('message.png')
     for button in list_of_message_button:
         left, top, width, height = button
         xbutton, ybutton = left + int(width/2), top + int(height/2)
+        # closing other windows before clicking message
+        clickAllCloseButton()
         pg.moveTo(xbutton, ybutton, 0.5)
         pg.click()
         mess_count = mess_count + 1
@@ -106,9 +108,6 @@ for i in range(no_of_pages):
             clickSend()
             send_count = send_count + 1
         time.sleep(0.5)
-        clickAllCloseButton()
-        pg.moveTo(1024, 388, 0.25)
-        pg.click()
     time.sleep(0.5)
     pg.press('pagedown')
     time.sleep(3)
